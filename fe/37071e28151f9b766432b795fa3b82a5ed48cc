@@ -1,0 +1,26 @@
+.cursorrules
+  s_17c7c25e5bff36::t_2a81edc84ebab6 1-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "fe37071e28151f9b766432b795fa3b82a5ed48cc",
+  "prompts": {},
+  "logical_commit_id": "fe37071e28151f9b766432b795fa3b82a5ed48cc",
+  "humans": {
+    "h_8eb6331fa0b00f": {
+      "author": "atykzj <anthonykzj@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_17c7c25e5bff36": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "47fa9138-4c32-4c4f-b0c6-c83ae77a4652",
+        "model": "claude-opus-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 49
+    }
+  }
+}
