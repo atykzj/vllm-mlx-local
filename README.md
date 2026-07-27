@@ -33,15 +33,20 @@ This project proves that vLLM with MLX backend is faster than standard MLX infer
 ## Installation
 
 ```bash
-# Clone repository
+# Clone repository (if not already done)
 cd vllm-mlx-local
 
-# Install dependencies
+# Install external dependencies
 pip install -r requirements.txt
 
-# Or install in development mode
+# Install the package in development mode
+pip install -e .
+
+# Or install with development tools included
 pip install -e ".[dev]"
 ```
+
+**Note:** Both `requirements.txt` and `pip install -e .` are required. The first installs external dependencies (mlx, fastapi, etc.), while the second installs the local `vllm_mlx` package itself.
 
 ## Usage
 
@@ -106,29 +111,40 @@ curl -X POST http://127.0.0.1:52198/v1/chat/completions \
 
 ## Cursor Integration
 
-### Method 1: Settings UI
+**Note:** Cursor's model settings cannot connect to `localhost` directly (private networks are blocked for security). Use localtunnel to expose your server with a public URL.
 
-1. Start the server: `python -m vllm_mlx.server`
-2. Open Cursor Settings → Models
-3. Add Custom Model
-4. Provider: OpenAI Compatible
-5. API Base: `http://127.0.0.1:52198/v1`
-6. Model: `qwen2.5-coder-7b-4bit`
+### Step 1: Start the Server
 
-### Method 2: settings.json
+```bash
+python -m vllm_mlx.server
+```
 
-Add to Cursor settings:
+### Step 2: Create a Tunnel (in a separate terminal)
 
-```json
-{
-  "models": {
-    "vllm-mlx-local": {
-      "provider": "openai",
-      "apiBase": "http://127.0.0.1:52198/v1",
-      "model": "qwen2.5-coder-7b-4bit"
-    }
-  }
-}
+```bash
+# Using localtunnel (no signup required)
+npx localtunnel --port 52198
+```
+
+This will output a URL like: `https://your-subdomain.loca.lt`
+
+### Step 3: Configure Cursor
+
+1. Open Cursor Settings → Models
+2. Add Custom Model
+3. Provider: `OpenAI Compatible`
+4. API Base: `https://your-subdomain.loca.lt/v1` (use your localtunnel URL)
+5. Model: `qwen2.5-coder-7b-4bit`
+
+**Note:** On first access, localtunnel may show a "click to continue" page. Visit your tunnel URL in a browser and click through before using in Cursor.
+
+### Alternative: Local Testing Only
+
+For local testing without Cursor integration, use the test scripts directly:
+
+```bash
+python scripts/test_single_request.py
+python scripts/test_concurrent_requests.py
 ```
 
 ## Testing

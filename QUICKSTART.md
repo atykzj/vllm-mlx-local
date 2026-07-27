@@ -12,17 +12,26 @@ This guide walks you through setting up and running vLLM-MLX Local from scratch.
 ## Step 1: Install Dependencies
 
 ```bash
-# Install required packages
+# Install external dependencies
 pip install -r requirements.txt
+
+# Install the vllm_mlx package itself
+pip install -e .
 ```
 
-Expected packages:
+**Important:** Both commands are required:
+1. `pip install -r requirements.txt` - Installs external packages (mlx, fastapi, etc.)
+2. `pip install -e .` - Installs the local `vllm_mlx` package in development mode
+
+Expected packages installed:
 - `mlx` - Apple MLX framework
 - `mlx-lm` - MLX language models
 - `psutil` - Memory detection
 - `fastapi` - Web framework
 - `uvicorn` - ASGI server
 - `pytest` - Testing framework
+- `requests` - HTTP client for manual testing scripts
+- `vllm-mlx-local` - This package (editable install)
 
 ## Step 2: Verify Installation
 
@@ -95,35 +104,40 @@ curl -X POST http://127.0.0.1:52198/v1/completions \
 
 ## Step 5: Configure Cursor
 
-### Option A: Cursor Settings UI
+**Important:** Cursor's model settings cannot connect to `localhost` directly (private networks are blocked for security). You need to expose your server via a tunnel.
 
-1. Keep the server running
-2. Open Cursor → Settings (⌘,)
-3. Navigate to Models
-4. Click "Add Custom Model"
-5. Fill in:
-   - **Provider**: OpenAI Compatible
-   - **API Base**: `http://127.0.0.1:52198/v1`
-   - **Model**: `qwen2.5-coder-7b-4bit`
-6. Save
+### Step 5a: Create a Tunnel
 
-### Option B: Edit settings.json
+In a **new terminal** (keep the server running):
+
+```bash
+# Using localtunnel (no signup required, runs via npx)
+npx localtunnel --port 52198
+```
+
+You'll get a URL like: `https://your-subdomain.loca.lt`
+
+**Note:** On first access, visit the URL in your browser and click "Click to Continue" to activate.
+
+### Step 5b: Add to Cursor Settings
 
 1. Open Cursor → Settings (⌘,)
-2. Search for "settings.json"
-3. Click "Edit in settings.json"
-4. Add:
+2. Navigate to Models
+3. Click "Add Custom Model"
+4. Fill in:
+   - **Provider**: OpenAI Compatible
+   - **API Base**: `https://your-subdomain.loca.lt/v1` (use YOUR tunnel URL)
+   - **Model**: `qwen2.5-coder-7b-4bit`
+5. Save
 
-```json
-{
-  "models": {
-    "vllm-mlx-local": {
-      "provider": "openai",
-      "apiBase": "http://127.0.0.1:52198/v1",
-      "model": "qwen2.5-coder-7b-4bit"
-    }
-  }
-}
+### Alternative: Local Testing Only
+
+If you just want to test the API without Cursor integration:
+
+```bash
+# Run the test scripts directly
+python scripts/test_single_request.py
+python scripts/test_concurrent_requests.py
 ```
 
 ## Step 6: Test in Cursor

@@ -1,11 +1,12 @@
 """OpenAI-compatible API server for Cursor integration."""
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header, Depends
 from pydantic import BaseModel
 import uvicorn
 from typing import Optional
 import time
 import uuid
+import os
 
 from .engine import VLLMMLXEngine
 from .memory import get_memory_info
@@ -14,6 +15,45 @@ from .models import recommend_model
 # Constants
 PORT = 52198  # Rare port to avoid clashes
 HOST = "127.0.0.1"
+
+# Optional API key for security when exposed via ngrok
+# Set environment variable VLLM_MLX_API_KEY to enable authentication
+API_KEY = os.environ.get("VLLM_MLX_API_KEY", None)
+
+
+def verify_api_key(authorization: Optional[str] = Header(None)):
+    """Verify API key if VLLM_MLX_API_KEY is set.
+    
+    Args:
+        authorization: Bearer token from Authorization header
+        
+    Raises:
+        HTTPException: If API key is required but invalid
+    """
+    # If no API key configured, allow all requests (local use)
+    if API_KEY is None:
+        return
+    
+    # API key is configured, validate it
+    if authorization is None:
+        raise HTTPException(
+            status_code=401,
+            detail="API key required. Set Authorization: Bearer YOUR_KEY"
+        )
+    
+    # Extract token from "Bearer <token>" format
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid authorization format. Use: Bearer YOUR_KEY"
+        )
+    
+    token = authorization[7:]  # Remove "Bearer " prefix
+    if token != API_KEY:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API key"
+        )
 
 app = FastAPI(
     title="vLLM-MLX Local",
@@ -96,7 +136,7 @@ class ModelsResponse(BaseModel):
 
 # Endpoints
 @app.get("/v1/models", response_model=ModelsResponse)
-async def list_models():
+async def list_models(_: None = Depends(verify_api_key)):
     """List available models (OpenAI-compatible).
     
     Returns:
@@ -112,7 +152,7 @@ async def list_models():
 
 
 @app.post("/v1/completions", response_model=CompletionResponse)
-async def completions(request: CompletionRequest):
+async def completions(request: CompletionRequest, _: None = Depends(verify_api_key)):
     """Generate completion (code completion endpoint).
     
     Args:
@@ -139,7 +179,7 @@ async def completions(request: CompletionRequest):
 
 
 @app.post("/v1/chat/completions", response_model=ChatResponse)
-async def chat_completions(request: ChatRequest):
+async def chat_completions(request: ChatRequest, _: None = Depends(verify_api_key)):
     """Generate chat completion (Cursor chat endpoint).
     
     Args:
@@ -225,6 +265,12 @@ def init_engine():
     )
     
     print(f"Ready on http://{HOST}:{PORT}")
+    
+    # Print API key status for security awareness
+    if API_KEY:
+        print(f"API key protection: ENABLED")
+    else:
+        print(f"API key protection: DISABLED (set VLLM_MLX_API_KEY to enable)")
 
 
 def serve(host: str = HOST, port: int = PORT):

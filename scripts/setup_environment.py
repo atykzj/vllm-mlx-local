@@ -24,6 +24,7 @@ REQUIRED_PACKAGES = [
     "uvicorn",
     "pydantic",
     "pytest",
+    "requests",
 ]
 MINIMUM_MEMORY_GB = 8
 
@@ -109,6 +110,21 @@ def check_dependencies() -> bool:
     return all_installed
 
 
+def check_package_installed() -> bool:
+    """Check if the vllm_mlx package itself is installed.
+    
+    Returns:
+        True if package is installed, False otherwise
+    """
+    try:
+        import vllm_mlx
+        print("✅ vllm_mlx package is installed")
+        return True
+    except ImportError:
+        print("❌ vllm_mlx package not installed (run: pip install -e .)")
+        return False
+
+
 def check_memory() -> bool:
     """Check if sufficient memory is available.
     
@@ -169,7 +185,7 @@ def check_project_structure() -> bool:
 
 
 def install_dependencies():
-    """Install dependencies from requirements.txt."""
+    """Install dependencies from requirements.txt and the package itself."""
     print("\nAttempting to install dependencies...")
     
     project_root = Path(__file__).parent.parent
@@ -180,7 +196,7 @@ def install_dependencies():
         return False
     
     try:
-        # Install dependencies
+        # Install external dependencies
         subprocess.check_call([
             sys.executable,
             "-m",
@@ -189,7 +205,20 @@ def install_dependencies():
             "-r",
             str(requirements_file)
         ])
-        print("✅ Dependencies installed successfully")
+        print("✅ External dependencies installed successfully")
+        
+        # Install the package itself in editable mode
+        print("\nInstalling vllm_mlx package in development mode...")
+        subprocess.check_call([
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "-e",
+            str(project_root)
+        ])
+        print("✅ vllm_mlx package installed successfully")
+        
         return True
     except subprocess.CalledProcessError as error:
         print(f"❌ Failed to install dependencies: {error}")
@@ -241,19 +270,28 @@ def main():
     print_section("Dependencies")
     dependencies_ok = check_dependencies()
     
-    if not dependencies_ok:
-        print("\n❌ Some dependencies are missing.")
-        response = input("Would you like to install them now? (y/n): ")
+    # Check if vllm_mlx package is installed
+    package_installed = check_package_installed()
+    
+    if not dependencies_ok or not package_installed:
+        if not dependencies_ok:
+            print("\n❌ Some external dependencies are missing.")
+        if not package_installed:
+            print("❌ vllm_mlx package is not installed.")
+        
+        response = input("\nWould you like to install them now? (y/n): ")
         
         if response.lower() == 'y':
             if install_dependencies():
                 dependencies_ok = True
+                package_installed = True
             else:
                 all_checks_passed = False
         else:
             all_checks_passed = False
             print("\nTo install manually, run:")
             print("  pip install -r requirements.txt")
+            print("  pip install -e .")
     
     # Check memory
     print_section("Memory")
@@ -261,7 +299,7 @@ def main():
         all_checks_passed = False
     
     # Get recommended model
-    if dependencies_ok:
+    if dependencies_ok and package_installed:
         print_section("Model Recommendation")
         get_recommended_model()
     

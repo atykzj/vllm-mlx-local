@@ -259,6 +259,22 @@ python scripts/setup_environment.py
 # Answer 'y' when prompted to install
 ```
 
+### Module Not Found
+
+**Error:** `ModuleNotFoundError: No module named 'vllm_mlx'`
+
+**Cause:** The local `vllm_mlx` package is not installed in your environment. Installing `requirements.txt` only installs external dependencies (mlx, fastapi, etc.), not the local package itself.
+
+**Solution:**
+```bash
+# Install the package in development mode
+pip install -e .
+
+# Or use the setup script which does both
+python scripts/setup_environment.py
+# Answer 'y' when prompted to install
+```
+
 ### Low Memory
 
 **Warning:** `⚠️ Low memory (recommended: 8GB+)`
@@ -332,22 +348,34 @@ done
 
 ## Integration with Cursor
 
-After validating the API with these scripts, you can integrate with Cursor:
+After validating the API with these scripts, you can integrate with Cursor.
+
+**Note:** Cursor cannot connect to `localhost` directly (private networks are blocked). Use localtunnel to expose your server.
+
+### Setup Steps
 
 1. Start the server:
    ```bash
    python -m vllm_mlx.server
    ```
 
-2. Configure Cursor (Settings → Models):
-   - Provider: OpenAI Compatible
-   - API Base: `http://127.0.0.1:52198/v1`
+2. Create a tunnel (in a new terminal):
+   ```bash
+   npx localtunnel --port 52198
+   ```
+   This gives you a URL like `https://your-subdomain.loca.lt`
+
+3. Configure Cursor (Settings → Models → Add Custom Model):
+   - Provider: `OpenAI Compatible`
+   - API Base: `https://your-subdomain.loca.lt/v1` (your tunnel URL)
    - Model: `qwen2.5-coder-7b-4bit`
 
-3. Test in Cursor:
+4. Test in Cursor:
    - Try code completion
    - Use chat feature
    - Verify performance
+
+**Tip:** On first access, visit your tunnel URL in a browser and click through the confirmation page.
 
 ## Next Steps
 
