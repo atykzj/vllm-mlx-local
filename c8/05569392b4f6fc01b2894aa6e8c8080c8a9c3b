@@ -1,0 +1,36 @@
+planning/stage4-cursor.md
+  s_17c7c25e5bff36::t_ba0066e41deb8b 1-385
+planning/plan.md
+  s_17c7c25e5bff36::t_1918fc1bb658b8 1-149
+planning/stage1-memory.md
+  s_17c7c25e5bff36::t_26c281604b6e95 1-130
+planning/stage2-engine.md
+  s_17c7c25e5bff36::t_06781edd89ce68 1-129
+planning/README.md
+  s_17c7c25e5bff36::t_3387f5dfcecf16 1-28
+planning/stage3-benchmarks.md
+  s_17c7c25e5bff36::t_4555a74ab73f3e 1-259
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "c805569392b4f6fc01b2894aa6e8c8080c8a9c3b",
+  "prompts": {},
+  "logical_commit_id": "c805569392b4f6fc01b2894aa6e8c8080c8a9c3b",
+  "humans": {
+    "h_8eb6331fa0b00f": {
+      "author": "atykzj <anthonykzj@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_17c7c25e5bff36": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "47fa9138-4c32-4c4f-b0c6-c83ae77a4652",
+        "model": "claude-opus-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 1080
+    }
+  }
+}
