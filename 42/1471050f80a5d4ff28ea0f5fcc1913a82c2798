@@ -1,0 +1,20 @@
+.cursor/hooks/README.md
+  s_17c7c25e5bff36::t_11b82caf07dbdc 90
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "421471050f80a5d4ff28ea0f5fcc1913a82c2798",
+  "prompts": {},
+  "logical_commit_id": "421471050f80a5d4ff28ea0f5fcc1913a82c2798",
+  "sessions": {
+    "s_17c7c25e5bff36": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "47fa9138-4c32-4c4f-b0c6-c83ae77a4652",
+        "model": "claude-opus-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>"
+    }
+  }
+}
