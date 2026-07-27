@@ -1,0 +1,23 @@
+.cursor/hooks/pii-check.sh
+  s_17c7c25e5bff36::t_c054075657edfe 4,6,13-36,52,55
+  s_17c7c25e5bff36::t_6d7ead7518e6a9 10
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "33e7702f95c1c804104ff5a53d63f7a31ba7c128",
+  "prompts": {},
+  "logical_commit_id": "33e7702f95c1c804104ff5a53d63f7a31ba7c128",
+  "sessions": {
+    "s_17c7c25e5bff36": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "47fa9138-4c32-4c4f-b0c6-c83ae77a4652",
+        "model": "claude-opus-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 29,
+      "total_deletions": 5
+    }
+  }
+}
