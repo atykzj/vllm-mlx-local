@@ -167,8 +167,8 @@ async def completions(request: CompletionRequest, _: None = Depends(verify_api_k
             detail="Engine not initialized"
         )
     
-    # Generate completion
-    result = engine.generate(request.prompt, request.max_tokens)
+    # Generate completion using async method to not block event loop
+    result = await engine.generate_async(request.prompt, request.max_tokens)
     
     return CompletionResponse(
         id=f"cmpl-{uuid.uuid4().hex[:8]}",
@@ -199,8 +199,8 @@ async def chat_completions(request: ChatRequest, _: None = Depends(verify_api_ke
     prompt = "\n".join([f"{m.role}: {m.content}" for m in request.messages])
     prompt += "\nassistant:"
     
-    # Generate response
-    result = engine.generate(prompt, request.max_tokens)
+    # Generate response using async method to not block event loop
+    result = await engine.generate_async(prompt, request.max_tokens)
     
     return ChatResponse(
         id=f"chatcmpl-{uuid.uuid4().hex[:8]}",
@@ -271,6 +271,14 @@ def init_engine():
         print(f"API key protection: ENABLED")
     else:
         print(f"API key protection: DISABLED (set VLLM_MLX_API_KEY to enable)")
+
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Cleanup on server shutdown."""
+    global engine
+    if engine is not None:
+        engine.shutdown()
 
 
 def serve(host: str = HOST, port: int = PORT):
