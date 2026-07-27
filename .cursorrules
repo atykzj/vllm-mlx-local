@@ -1,0 +1,49 @@
+# vLLM-MLX Local Project Rules
+
+## Project Context
+This is a POC to prove vLLM with MLX backend is faster than standard MLX inference on MacBook unified memory. The goal is to benchmark and validate efficiency gains, then expose an OpenAI-compatible API for Cursor integration.
+
+## Tech Stack
+- Python 3.11+
+- MLX / mlx-lm (Apple Silicon ML framework)
+- FastAPI + Uvicorn (OpenAI-compatible API server)
+- pytest / pytest-asyncio (TDD workflow)
+
+## Development Workflow
+- **Test-Driven Development**: Write tests first, then implement
+- **Stage-based**: Complete each stage fully before moving to next
+- **Benchmarks are tests**: Performance proofs are part of the test suite
+
+## Code Style (from user rules)
+- Avoid magic numbers, use named constants
+- if statements must have braces {}
+- Use descriptive variable names with camelCase
+- Functions should be under 100 lines, single responsibility
+- No more than 5 function parameters
+- Early return pattern for error handling
+- Comments every ~20 lines for key logic
+
+## Memory Model
+- 70% of available memory for model weights
+- 30% of available memory for KV cache
+- Minimum model: Qwen2.5-Coder-7B-4bit (~4GB)
+
+## API Server
+- Port: 52198 (rare localhost port)
+- OpenAI-compatible: /v1/models, /v1/completions, /v1/chat/completions
+
+## File Structure
+```
+src/vllm_mlx/
+├── memory.py      # Stage 1: Memory detection
+├── models.py      # Stage 1: Model registry + recommendation
+├── engine.py      # Stage 2: vLLM+MLX core
+├── benchmark.py   # Stage 3: Benchmark utilities
+└── server.py      # Stage 4: OpenAI API server
+```
+
+## Testing
+- tests/test_stage1_memory.py - Memory detection + model recommendation
+- tests/test_stage2_engine.py - Model loading + inference
+- tests/test_stage3_benchmarks.py - Performance proofs
+- tests/test_stage4_cursor.py - OpenAI API E2E tests
