@@ -43,8 +43,8 @@ def get_memory_info() -> dict:
     }
 
 
-if __name__ == "__main__":
-    # CLI interface for memory detection
+def main():
+    """CLI interface for memory detection and model recommendation."""
     from vllm_mlx.models import recommend_model
     
     # Detect memory
@@ -64,3 +64,7 @@ if __name__ == "__main__":
     print(f"\nRecommended Model: {recommendation['model_id']}")
     print(f"  - Weights:  {recommendation['config']['weight_gb']:.1f} GB (70% budget: {weightsBudget:.2f} GB)")
     print(f"  - KV Cache: {recommendation['kv_cache_gb']:.2f} GB (30% of available)")
+
+
+if __name__ == "__main__":
+    main()
