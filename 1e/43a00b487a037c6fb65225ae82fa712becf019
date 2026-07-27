@@ -1,0 +1,71 @@
+STAGE1_COMPLETE.md
+  s_2874e4436662ac::t_988610323da916 1-66
+src/vllm_mlx/memory.py
+  s_9ffe956dc45926::t_800e9e3c8a4804 29,40-41,49,52
+  s_2874e4436662ac::t_41cbf1922e189c 7-11,13-14,17-20,22,24,30,32,34,36-38,42,46-48,50-51,53-66
+  s_2874e4436662ac::t_9b3b8b00620d46 1,4,12,23,25-28,31,33,35,39,43
+  s_0d068a6ec6a768::t_d705a1b4c6ddf2 2-3,5-6,15-16,21,44-45
+src/vllm_mlx/models.py
+  s_0d068a6ec6a768::t_a3c8db6f46ac1c 24-25,27-28,30,32,38
+  s_2874e4436662ac::t_e51ec114d2c0fa 1-2,4-14,18,22,35-37,43,45,47-48,51,55
+  s_9ffe956dc45926::t_7d481244437a80 3,15-17,19-21,23,26,29,31,33-34,39-42,44,46,49-50,52-54
+requirements.txt
+  s_9ffe956dc45926::t_60fe15f5192d11 3-4,6-9,14
+  s_0d068a6ec6a768::t_756053a7b2e144 2
+  s_2874e4436662ac::t_2e45a0f9afbf4e 1,5,10-13
+tests/__init__.py
+  s_2874e4436662ac::t_d3cfb610cc819a 1
+src/vllm_mlx/__init__.py
+  s_0d068a6ec6a768::t_cdad770eac6a16 1
+  s_2874e4436662ac::t_b3d8bba3dd2229 2-3
+setup.py
+  s_9ffe956dc45926::t_863f581c321658 1,5-7,9,11-14,19-20,22-24,30-36,39-44
+  s_2874e4436662ac::t_77f625b1d84ef3 2-4,8,10,15-18,21,25-29,37-38,45
+tests/test_stage1_memory.py
+  s_9ffe956dc45926::t_8579fae2bdfc6c 1
+  s_2874e4436662ac::t_8c895c87c6695c 2-32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "1e43a00b487a037c6fb65225ae82fa712becf019",
+  "prompts": {},
+  "logical_commit_id": "1e43a00b487a037c6fb65225ae82fa712becf019",
+  "humans": {
+    "h_8eb6331fa0b00f": {
+      "author": "atykzj <anthonykzj@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_0d068a6ec6a768": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "23a25b4b-4ebc-4cf2-9e2d-11151675d939",
+        "model": "claude-sonnet-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 1386,
+      "total_deletions": 38
+    },
+    "s_2874e4436662ac": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "aaa1712b-7ffe-4dfd-a015-9b35a7c45036",
+        "model": "claude-sonnet-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 312,
+      "total_deletions": 126
+    },
+    "s_9ffe956dc45926": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "00ae051d-74f4-4c56-9b62-af0cf27bb13f",
+        "model": "claude-sonnet-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 1622,
+      "total_deletions": 631
+    }
+  }
+}
