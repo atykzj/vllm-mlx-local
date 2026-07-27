@@ -1,69 +1,90 @@
 # Cursor Hooks - PII/Sensitive Information Checker
 
-This directory contains Cursor hooks that automatically scan for PII (Personally Identifiable Information) and sensitive data.
+This directory contains Cursor hooks that automatically scan for PII (Personally Identifiable Information) and sensitive data before commits.
 
-## Hooks Configured
+## How It Works
 
-### 1. Pre-Commit PII Scanner (`pii-check.sh`)
+When you run `git commit`, the hook:
 
-**Trigger**: `git commit` commands
+1. **Verifies Git Identity** - Ensures local git config (`user.name` and `user.email`) is set
+2. **Detects Staged Files** - Identifies all files being committed
+3. **Requests Agent Review** - Asks the Cursor agent to scan each file for sensitive info
+4. **Blocks if Issues Found** - Commit is blocked until you approve or deny
 
-**Behavior**: 
-- Intercepts all `git commit` commands
-- Gets list of staged files
-- Asks the Cursor agent to scan each file for sensitive information
-- Blocks commit if issues are found (requires user approval)
+## What It Checks For
 
-**What it checks for**:
-- Email addresses
+The agent scans for:
+- Email addresses (except git config)
 - Phone numbers
 - API keys, tokens, secrets
 - Passwords or credentials
 - Private keys (SSH, GPG, etc.)
-- Personal names with identifying info
-- Physical addresses
 - Credit card numbers
 - Social security numbers
-- Internal URLs or IPs
+- Internal/private URLs or IPs
 
-### 2. Post-Edit Quick Scan (prompt hook)
+## Git Identity Verification
 
-**Trigger**: After any file edit
-
-**Behavior**:
-- Lightweight prompt-based scan
-- Checks edited files for obvious PII patterns
-- Warns inline if issues detected
-- 10 second timeout for fast feedback
-
-## Usage
-
-The hooks run automatically when you:
-1. **Commit code**: The PII scanner will analyze all staged files before the commit proceeds
-2. **Edit files**: A quick scan runs after each file edit
-
-## Testing
-
-To test the pre-commit hook:
-```bash
-# Stage some files
-git add .
-
-# Try to commit - the hook will intercept
-git commit -m "test commit"
-```
-
-You'll see a message asking you to approve/deny based on the agent's PII scan.
+The hook ensures commits use your **local** git identity:
+- `git config --local user.name` must be set
+- `git config --local user.email` must be set
+- Warns if effective config differs from local config
 
 ## Configuration
 
-Edit `.cursor/hooks.json` to:
-- Adjust timeouts
-- Add/remove patterns to match
-- Disable specific hooks
+Edit `.cursor/hooks.json`:
+
+```json
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/pii-check.sh",
+        "matcher": "git commit",
+        "failClosed": true,
+        "timeout": 120
+      }
+    ]
+  }
+}
+```
+
+- `failClosed: true` - Blocks commits if hook fails (safe default)
+- `timeout: 120` - 2 minute timeout for agent review
+
+## Debugging
+
+Check the log file for hook execution details:
+```bash
+cat /tmp/pii-check-hook.log
+```
+
+The log shows:
+- Working directory detection
+- Git identity verification
+- Staged file detection
+- Agent review requests
+
+## Testing
+
+```bash
+# Stage some files
+git add some-file.txt
+
+# Commit - hook will intercept
+git commit -m "test"
+
+# Check log
+cat /tmp/pii-check-hook.log
+```
 
 ## Troubleshooting
 
-1. **Hook not firing**: Check Cursor's Hooks settings tab or Hooks output channel
-2. **Timeout errors**: Increase the `timeout` value in hooks.json
-3. **False positives**: The agent may flag example data; approve if it's clearly test data
+| Issue | Solution |
+|-------|----------|
+| Hook not firing | Check `Cursor Settings > Hooks` tab |
+| "Local git identity not configured" | Run `git config --local user.name "Name"` and `git config --local user.email "email"` |
+| Timeout errors | Increase `timeout` in hooks.json |
+| Files not detected | Check `/tmp/pii-check-hook.log` for diagnostics |
+
