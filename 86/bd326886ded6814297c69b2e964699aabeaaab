@@ -1,0 +1,40 @@
+STAGE3_ADJUSTMENTS.md
+  s_de2167912f9491::t_02c75c8934165a 1-153
+ADJUSTMENT_SUMMARY.md
+  s_de2167912f9491::t_dcb0956222f534 1-145
+planning/plan.md
+  s_de2167912f9491::t_258caadba6c5d6 7,10,13,16,19,21-22
+COMPLETE_TEST_RESULTS.md
+  s_17c7c25e5bff36::t_1f2e4fbdcd01fe 1-158
+TEST_RESULTS_SUMMARY.md
+  s_17c7c25e5bff36::t_66fbdc96fe406a 1-101
+tests/test_stage3_benchmarks.py
+  s_17c7c25e5bff36::t_a1d7b99b37d59b 36,38-39,57,65-66,77,83-85,136-137
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "86bd326886ded6814297c69b2e964699aabeaaab",
+  "prompts": {},
+  "logical_commit_id": "86bd326886ded6814297c69b2e964699aabeaaab",
+  "sessions": {
+    "s_17c7c25e5bff36": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "47fa9138-4c32-4c4f-b0c6-c83ae77a4652",
+        "model": "claude-opus-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>"
+    },
+    "s_de2167912f9491": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "16f24993-1fc8-4327-af84-2b92a689c60d",
+        "model": "claude-sonnet-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 305,
+      "total_deletions": 7
+    }
+  }
+}
