@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/pii-check.sh",
+        "matcher": "git commit",
+        "failClosed": true,
+        "timeout": 120
+      }
+    ],
+    "afterFileEdit": [
+      {
+        "type": "prompt",
+        "prompt": "Quickly scan the edited file for obvious PII patterns (emails, API keys, passwords, phone numbers). If found, warn in 1 line. If clean, say nothing. File: $ARGUMENTS",
+        "timeout": 10
+      }
+    ]
+  }
+}
