@@ -1,0 +1,28 @@
+planning/README.md
+  s_17c7c25e5bff36::t_02a9eadaea092d 29
+.cursor/hooks/pii-check.sh
+  s_17c7c25e5bff36::t_26b1299efed5d7 45-46
+  s_17c7c25e5bff36::t_23f9e0f299e26c 100,103
+  s_17c7c25e5bff36::t_bbef7d3ec736d7 9,12
+  s_17c7c25e5bff36::t_c054075657edfe 4,47-50,52-54,58-60,62-66,70-72
+  s_17c7c25e5bff36::t_f13264b1b87b8d 6-8,10-11,13-14,17-44,51,55-56,61,67-69,73-86,88,92-99,101-102,104-105,107
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "a28c5b976e84fa583e61aef509329a9e864abac6",
+  "prompts": {},
+  "logical_commit_id": "a28c5b976e84fa583e61aef509329a9e864abac6",
+  "sessions": {
+    "s_17c7c25e5bff36": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "47fa9138-4c32-4c4f-b0c6-c83ae77a4652",
+        "model": "claude-opus-4-5"
+      },
+      "human_author": "atykzj <anthonykzj@gmail.com>",
+      "total_additions": 82,
+      "total_deletions": 57
+    }
+  }
+}
